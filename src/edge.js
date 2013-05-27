@@ -53,11 +53,15 @@ $(function(){
       // Set up listener
       // var sourceNode = this.graph.get("nodes").get( this.get("source")[0] );
       this.Source.node.on( "send:"+this.Source.id, this.send, this );
+      this.Source.node.on( "pulse", this.pulse, this );
 
       return this;
     },
-    send: function (value) {
-      this.Target.node.receive( this.Target.id, value );
+    send: function (value, signalID) {
+      this.Target.node.receive( this.Target.id, value, signalID );
+    },
+    pulse: function (signalID) {
+      this.Target.node.pulse( signalID );
     },
     disconnect: function () {
       // Called from graph.removeEdge()
@@ -80,6 +84,7 @@ $(function(){
 
       // Remove listener
       this.Source.node.off( "send:"+this.Source.id, this.send, this );
+      this.Source.node.off( "pulse", this.pulse, this );
 
       this.connected = false;
     },

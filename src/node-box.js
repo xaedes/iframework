@@ -31,26 +31,25 @@ $(function(){
       this.view = new Iframework.NodeBoxView({model:this});
       return this.view;
     },
-    send: function (name, value) {
+    send: function (name, value, signalID) {
       // Send message out to connected modules
       // Defer to make this safe for infinite loops
       var self = this;
       _.defer(function(){
-        self.trigger("send:"+name, value);
+        self.trigger("send:"+name, value, signalID);
       });
-
     },
-    receive: function (name, value) {
+    receive: function (name, value, signalID) {
       // The listener that hits this is added in the edge
       if (this.view.Native) {
-        this.view.Native.receive(name, value);
+        this.view.Native.receive(name, value, signalID);
       }
-
-      // for (var name in message) {
-      //   if (this.view.Native) {
-      //     this.view.Native.receive(name, message[name]);
-      //   }
-      // }
+    },
+    pulse: function (signalID) {
+      // The listener that hits this is added in the edge
+      if (this.view.Native) {
+        this.view.Native.pulse(signalID);
+      }
     },
     infoLoaded: function (info) {
       this.info = info;

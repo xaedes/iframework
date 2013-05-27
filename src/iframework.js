@@ -91,6 +91,7 @@ $(function(){
     // Thanks http://www.madebypi.co.uk/labs/colorutils/examples.html :: red.equal(7, true);
     wireColors: ["#FF9292", "#00C2EE", "#DCA761", "#8BB0FF", "#96BD6D", "#E797D7", "#29C6AD"],
     wireColorIndex: 0,
+    signalID: 0,
     selectedPort: null,
     getWireColor: function () {
       var color = this.wireColors[this.wireColorIndex];

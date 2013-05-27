@@ -37,6 +37,8 @@ $(function(){
       this.initializeCategory();
       this.initializeModule();
 
+      this.waitForSignals = [];
+
       return this;
     },
     initializeCategory: function(){
@@ -56,21 +58,26 @@ $(function(){
     _lastRedraw: 0,
     renderAnimationFrame: function (timestamp) {
       // Get a tick from GraphView.renderAnimationFrame()
-      // this._valueChanged is set by NodeBox.receive()
-      if (this._triggerRedraw) {
+      // this._triggerRedraw is set by NodeBox.receive()
+      if (this._triggerRedraw && this.waitForSignals.length===0) {
         this._triggerRedraw = false;
         this.redraw(timestamp);
         this._lastRedraw = timestamp;
       }
     },
     set: function (name, value) {
-      // Sets own state, use sparingly
+      // Sets own state, use sparingly with direct user input 
       this.model.setValue(name, value);
     },
     send: function (name, value) {
-      this.model.send(name, value);
+      if (this.sentSignalID===null) {
+        this.sentSignalID = this.model.id;
+      }
+      this.model.trigger("pulse", this.sentSignalID);
+      this.model.send(name, value, this.sentSignalID);
+      this.sentSignalID = null;
     },
-    receive: function (name, value) {
+    receive: function (name, value, signalID) {
       if (this["input"+name]){
         this["input"+name](value);
         // Must manually set _triggerRedraw in that function if needed
@@ -79,9 +86,35 @@ $(function(){
         // Will trigger a NodeBoxNativeView.redraw() on next renderAnimationFrame
         this._triggerRedraw = true;
       }
+      if (signalID!==undefined) {
+        // Remove this signal from wait array
+        var index = this.waitForSignals.indexOf(signalID);
+        if (index!==-1){
+          this.waitForSignals.splice(index,1);
+          if (this._triggerRedraw && this.waitForSignals.length === 0) {
+            // Don't need to wait for RAF pulse from iframework
+            this.renderAnimationFrame();
+          }
+        }
+      }
+    },
+    sentSignalID: null,
+    pulse: function (id) {
+      if (this.waitForSignals.indexOf(id)===-1){
+        // Add this to wait list
+        this.waitForSignals.push(id);
+        if (this.sentSignalID === null) {
+          // Pass on pulse
+          var pulse = id + "-" + this.model.id;
+          this.model.trigger("pulse", pulse);
+          this.sentSignalID = pulse;
+        }
+      } else {
+        // Already waiting for that
+      }
     },
     toString: function() {
-      return "Native view: "+this.model.get("id")+": "+this.info.title;
+      return this.model.get("id")+":"+this.info.title;
     },
     resize: function(w,h) {
       // Called from NodeBoxView.resizestop()
