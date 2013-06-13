@@ -1,10 +1,10 @@
 $(function(){
   
   var template = 
-    '<div class="showpanel">'+
+    '<div class="showpanel accel">'+
       '<button class="button show-load icon-folder-open">app</button>'+
     '</div>'+
-    '<div class="panel">'+
+    '<div class="panel accel">'+
       '<div class="choosepanel">'+
         '<button class="button show-load icon-folder-open">app</button>'+
         '<button class="button close icon-cancel" title="close menu"></button>'+

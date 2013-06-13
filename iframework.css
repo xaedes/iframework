@@ -41,21 +41,38 @@ button,
   }
 
 div.graph {
-  background: #EEE url(img/meemoo-bg-graph.png) scroll repeat;
-  background-attachment: local;
+  background-color: #EEE;
+
   position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  overflow: auto;
-  border-right: 1px dotted #666;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  /*overflow: auto;*/
+
+  z-index: 1;
 }
-  div.edges {
-    z-index: 1;
+div.graph-background {
+  background: #EEE url(img/meemoo-bg-graph.png) scroll repeat;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+div.edges {
+  z-index: 1;
+}
+div.nodes {
+  z-index: 2;
+}
+  /* Thanks http://nicolasgallagher.com/micro-clearfix-hack/ */
+  .nodes:before,
+  .nodes:after {
+      content:"";
+      display:table;
   }
-  div.nodes {
-    z-index: 2;
+  .nodes:after {
+      clear:both;
   }
 
 .alpha-bg {
@@ -134,12 +151,6 @@ div.drag-image {
   div.drag-image img {
     max-width: 125px;
   }
-
-div.node {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
 
 div.module {
   border-top-right-radius: 3px; 
@@ -479,8 +490,8 @@ div.edges {
 div.showpanel {
   position: fixed;
   z-index: 1000;
-  top: 0px;
-  right: 16px;
+  top: 0;
+  right: 0;
   font-size: 10px;
   text-align: right;
   border-width: 0 1px 1px 1px;
@@ -489,15 +500,20 @@ div.showpanel {
 }
 div.panel {
   top: 0;
-  bottom: 0;
   right: 0;
+  bottom: 0;
   width: 350px;
   overflow: auto;
+
+  border-left: 1px dotted #666;
 
   font-size: 10px;
 
   position: fixed;
   display: none;
+
+  background-color: white;
+  z-index: 5;
 }
   div.choosepanel {
     text-align: right;
@@ -882,4 +898,14 @@ footer {
   font-family: Monaco, monospace;
   font-size: 10px;
   z-index: 1000;
+}
+
+
+/* HACK for jank busting */
+.accel {
+  -webkit-transform: translatez(0);
+  -moz-transform: translatez(0);
+  -ms-transform: translatez(0);
+  -o-transform: translatez(0);
+  transform: translatez(0);
 }

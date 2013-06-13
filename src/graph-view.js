@@ -1,6 +1,7 @@
 $(function(){
 
   var template = 
+    '<div class="graph-background" />'+
     '<div class="edges">'+
       '<svg id="edgesSvg" class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300"></svg>'+
     '</div>'+
