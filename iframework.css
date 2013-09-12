@@ -52,6 +52,11 @@ button,
     opacity: 0.35;
   }
 
+  .inner button,
+  .inner .button {
+    padding: 3px;
+  }
+
 .graph {
   background: #EEE url(img/meemoo-bg-graph.png) scroll repeat;
   position: absolute;
