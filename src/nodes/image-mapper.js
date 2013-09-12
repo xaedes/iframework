@@ -335,9 +335,11 @@ $(function(){
 
       if (layer.canvas) {
         if (layer.visible) {
-          this.$(".canvases").append(layer.canvas);
+          layer.canvas.style.display = "block";
+          // this.$(".canvases").append(layer.canvas);
         } else {
-          $(layer.canvas).detach();
+          layer.canvas.style.display = "none";
+          // $(layer.canvas).detach();
         }
       }
 
