@@ -36,7 +36,8 @@ $(function(){
       "click .module, .title": "click",
       "click .showcontrols": "showControls",
       "click .hidecontrols": "hideControls",
-      "click .remove":       "removeModel"
+      "click .remove":       "removeModel",
+      "mousewheel .inner":   "mouseWheel"
     },
     initialize: function () {
       this.render();
@@ -305,6 +306,10 @@ $(function(){
     refresh: function () {
     },
     popout: function () {
+    },
+    mouseWheel: function(event){
+      // Scroll this, not graph
+      event.stopPropagation();
     }
 
   });
