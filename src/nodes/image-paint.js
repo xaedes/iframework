@@ -145,22 +145,23 @@ $(function(){
       $(this.canvas).after(this.draw);
       $(this.draw).css({
         border: "1px solid #eee",
-        borderWidth: "0 1px 1px 0"
+        borderWidth: "0 1px 1px 0",
+        cursor: "pointer"
       });
 
       this.$("canvas").css({position:"absolute", top:0, left:0});
 
       this.tools.canvasPosition = {};
       var scrollParent = this.model.view.$(".inner")[0];
-      var scrollGraph = this.model.parentGraph.view.el;
       var self = this;
       var setOffset = function(){
-        self.tools.canvasPosition.left = self.model.get("x") - scrollParent.scrollLeft - scrollGraph.scrollLeft + 3;
-        self.tools.canvasPosition.top = self.model.get("y") - scrollParent.scrollTop - scrollGraph.scrollTop + 3;
+        var pan = self.model.parentGraph.get("pan");
+        self.tools.canvasPosition.left = self.model.get("x") - scrollParent.scrollLeft + pan[0] + 10;
+        self.tools.canvasPosition.top = self.model.get("y") - scrollParent.scrollTop + pan[1] + 40;
       };
       $(scrollParent).scroll(setOffset);
-      $(scrollGraph).scroll(setOffset);
-      this.model.on("change:x, change:y", setOffset);
+      this.listenTo(this.model, "change:x change:y", setOffset);
+      this.listenTo(this.model.parentGraph, "change:pan", setOffset);
       setOffset();
 
       this.draw.onmouseover = function(e){

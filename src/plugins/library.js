@@ -86,10 +86,11 @@ $( function () {
     var url = addByUrlInput.val();
     if (url !== "") {
       var graphEl = Iframework.$(".graph");
+      var pan = Iframework.shownGraph.get("pan");
       Iframework.shownGraph.addNode({
         "src": url,
-        "x": Math.floor(graphEl.scrollLeft() + graphEl.width()/2) - 100,
-        "y": Math.floor(graphEl.scrollTop() + graphEl.height()/2) - 100
+        "x": Math.floor(graphEl.width()/2) - 100 - pan[0],
+        "y": Math.floor(graphEl.height()/2) - 100 - pan[1]
       });
       addByUrlInput
         .val("")

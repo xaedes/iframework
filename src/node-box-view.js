@@ -69,6 +69,7 @@ $(function(){
       this.$("h1").disableSelection();
 
       this.listenTo(this.model.parentGraph, "change:pan", this.bumpPosition);
+      this.bumpPosition();
 
       // Bring newest to top
       this.mousedown();
@@ -174,7 +175,6 @@ $(function(){
 
       if (event.target !== this.$(".module")[0]) { return; }
 
-      console.log(ui);
       var delta = [ui.position.left - ui.originalPosition.left, ui.position.top - ui.originalPosition.top];
       var x = delta[0] + this.model.get("x");
       var y = delta[1] + this.model.get("y");
@@ -232,6 +232,10 @@ $(function(){
       this.model.set({
         w: newW,
         h: newH
+      });
+      this.$(".module").css({
+        width: newW,
+        height: newH
       });
       if (this.Native) {
         this.Native.resize(newW,newH);

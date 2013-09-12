@@ -23,7 +23,8 @@ $(function(){
       "dragstart .dragpan": "dragStart",
       "drag .dragpan":      "drag",
       "dragstop .dragpan":  "dragStop",
-      "click .show-parent-graph": "showParentGraph"
+      "click .show-parent-graph": "showParentGraph",
+      "mousewheel":      "mouseWheel"
     },
     unhidden: false,
     initialize: function () {
@@ -90,6 +91,8 @@ $(function(){
     drop: function (event, ui) {
       this.ignoreDrag(event);
 
+      var pan = this.model.get("pan");
+
       // Drop files
       var dt = event.originalEvent.dataTransfer;
       if (dt) {
@@ -98,9 +101,10 @@ $(function(){
           var file = dt.files[0];
           var split = file.type.split("/");
           var o = {
-            x: this.el.scrollLeft + event.originalEvent.clientX + 10,
-            y: this.el.scrollTop + event.originalEvent.clientY + 35
+            x: event.originalEvent.clientX - pan[0],
+            y: event.originalEvent.clientY - pan[1]
           };
+          console.log(pan, o);
           if (split[0]==="image"){
             o.src = "meemoo:image/in";
             o.state = { url: window.URL.createObjectURL( file ) };
@@ -129,8 +133,8 @@ $(function(){
       if (!type) {return false;}
 
       var options = {
-        x: Math.round(this.el.scrollLeft + ui.offset.left + 10),
-        y: Math.round(this.el.scrollTop + ui.offset.top + 35)
+        x: Math.round(ui.offset.left + 10) - pan[0],
+        y: Math.round(ui.offset.top + 35) - pan[1] - 20
       };
 
       switch(type){
@@ -349,6 +353,28 @@ $(function(){
       var y = this.dragStartPan[1] + ui.offset.top;
       this.model.set("pan", [x,y]);
       this.dragStartPan = null;
+    },
+    tempPan: [0,0],
+    setPanDebounce: _.debounce(function () {
+      // Moves the graph back to 0,0 and changes pan, which will rerender wires
+      this.$(".dragpan").css({
+        transform: "translate3d(0, 0, 0)"
+      });
+      var pan = this.model.get("pan");
+      var x = Math.round(pan[0] + this.tempPan[0]);
+      var y = Math.round(pan[1] + this.tempPan[1]);
+      this.model.set("pan", [x,y]);
+      this.tempPan = [0,0];
+    }, 250),
+    mouseWheel: function (event) {
+      event.preventDefault();
+      var oe = event.originalEvent;
+      this.tempPan[0] += oe.wheelDeltaX/6;
+      this.tempPan[1] += oe.wheelDeltaY/6;
+      this.$(".dragpan").css({
+        transform: "translate3d("+this.tempPan[0]+"px, "+this.tempPan[1]+"px, 0)"
+      });
+      this.setPanDebounce();
     }
     
   });

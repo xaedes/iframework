@@ -355,12 +355,12 @@ $(function(){
       event.stopPropagation();
     },
     portOffset: function(){
-      var pan = this.model.parentNode.parentGraph.get("pan");
-      var index = this.$el.index();
       // Node position
+      var pan = this.model.parentNode.parentGraph.get("pan");
       var x = pan[0] + this.model.parentNode.get("x");
       var y = pan[1] + this.model.parentNode.get("y");
       // Port position
+      var index = this.$el.index();
       if (this.model.isIn) {
         x -= 70;
         y += 9 + index*18;

@@ -41,10 +41,10 @@ $(function(){
 
         // Listen for changes to redraw
         if (this.model.Source) {
-          this.model.Source.parentNode.on("change:x change:y change:w change:h", this.redraw, this);
+          this.listenTo( this.model.Source.parentNode, "change:x change:y change:w change:h", this.redraw );
         }
         if (this.model.Target) {
-          this.model.Target.parentNode.on("change:x change:y", this.redraw, this);
+          this.listenTo( this.model.Target.parentNode, "change:x change:y", this.redraw );
         }
 
         // Listen for pan
@@ -103,13 +103,8 @@ $(function(){
     },
     calcPositions: function () {
       if (this.model) {
-        // Connected edge
-        // var sourceName = this.model.get("source")[1];
-        // var targetName = this.model.get("target")[1];
         var from = this.model.Source.view.portOffset();
         var to = this.model.Target.view.portOffset();
-
-        console.log(from,to);
 
         this.positions.fromX = from[0];
         this.positions.fromY = from[1];
