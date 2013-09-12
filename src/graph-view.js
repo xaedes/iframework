@@ -335,7 +335,28 @@ $(function(){
       this.dragStartPan = this.model.get("pan");
     },
     drag: function(event, ui){
-      if (!this.dragStartPan) {return;}
+      if (!this.dragStartPan) {
+        // Drag didn't originate here
+        // Pan graph if near edge
+        var panMargin = 50;
+        var panSpeed = 3;
+        if (event.clientX < panMargin) {
+          this.tempPan[0] += panSpeed;
+        } else if (event.clientX > this.$(".dragpan").width() - panMargin) {
+          this.tempPan[0] -= panSpeed;
+        }
+        if (event.clientY < panMargin) {
+          this.tempPan[1] += panSpeed;
+        } else if (event.clientY > this.$(".dragpan").height() - panMargin) {
+          this.tempPan[1] -= panSpeed;
+        }
+        this.$(".dragpan").css({
+          transform: "translate3d("+this.tempPan[0]+"px, "+this.tempPan[1]+"px, 0)"
+        });
+        this.setPanDebounce();
+        return;
+      }
+      // Pan graph
       var x = ui.offset.left;
       var y = ui.offset.top;
       this.$(".dragpan")

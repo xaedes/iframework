@@ -76,7 +76,7 @@ $(function(){
         Iframework.edgePreview.redraw();
       }
       // Don't drag module
-      event.stopPropagation();
+      // event.stopPropagation();
     },
     dragstop: function (event, ui) {
       // Remove iframe masks
@@ -184,7 +184,7 @@ $(function(){
         Iframework.edgePreview.redraw();
       }
       // Don't drag module
-      event.stopPropagation();
+      // event.stopPropagation();
     },
     unplugstop: function (event, ui) {
       if (this.armDelete && this.unpluggingEdge) {

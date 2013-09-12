@@ -146,9 +146,6 @@ $(function(){
       });
     },
     drag: function(event, ui){
-      // Don't drag graph
-      event.stopPropagation();
-
       if (event.target !== this.$(".module")[0]) { return; }
 
       // Drag other helpers
