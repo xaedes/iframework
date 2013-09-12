@@ -1,7 +1,7 @@
 $(function(){
 
   var template = 
-    '<div class="module" style="left:<%= get("x")-10 %>px;top:<%= get("y")-30 %>px;width:<%= get("w")+20 %>px;height:<%= get("h")+40 %>px;" >'+
+    '<div class="module" style="left:<%= get("x") %>px;top:<%= get("y") %>px;width:<%= get("w") %>px;height:<%= get("h") %>px;" >'+
       '<div class="outer"></div>'+
       '<div class="ports ports-in"></div>'+
       '<div class="ports ports-out"></div>'+
@@ -68,6 +68,8 @@ $(function(){
       // Disable selection for better drag+drop
       this.$("h1").disableSelection();
 
+      this.listenTo(this.model.parentGraph, "change:pan", this.bumpPosition);
+
       // Bring newest to top
       this.mousedown();
 
@@ -103,6 +105,9 @@ $(function(){
     _alsoDrag: [],
     _dragDelta: {},
     dragStart: function(event, ui){
+      // Don't drag graph
+      event.stopPropagation();
+
       if (event.target !== this.$(".module")[0]) { return; }
 
       // Add a mask so that iframes don't steal mouse
@@ -139,6 +144,9 @@ $(function(){
       });
     },
     drag: function(event, ui){
+      // Don't drag graph
+      event.stopPropagation();
+
       if (event.target !== this.$(".module")[0]) { return; }
 
       // Drag other helpers
@@ -161,10 +169,15 @@ $(function(){
       }
     },
     dragStop: function(event, ui){
+      // Don't drag graph
+      event.stopPropagation();
+
       if (event.target !== this.$(".module")[0]) { return; }
 
-      var x = parseInt(ui.position.left, 10);
-      var y = parseInt(ui.position.top, 10);
+      console.log(ui);
+      var delta = [ui.position.left - ui.originalPosition.left, ui.position.top - ui.originalPosition.top];
+      var x = delta[0] + this.model.get("x");
+      var y = delta[1] + this.model.get("y");
       this.moveToPosition(x,y);
       // Also drag
       if (this._alsoDrag.length) {
@@ -173,7 +186,9 @@ $(function(){
           var helper = el.data("ui-draggable-alsodrag-helper");
           var node = el.data("iframework-node-view");
           // Move other node
-          node.moveToPosition(parseInt(helper.css("left"), 10), parseInt(helper.css("top"), 10));
+          var x = delta[0] + node.model.get("x");
+          var y = delta[1] + node.model.get("y");
+          node.moveToPosition(x, y);
           // Remove helper
           helper.remove();
           el.data("ui-draggable-alsodrag-initial", null);
@@ -186,13 +201,19 @@ $(function(){
       this.model.parentGraph.view.unmaskFrames();
     },
     moveToPosition: function(x, y){
+      this.model.set({
+        x: x,
+        y: y
+      });
+      this.bumpPosition();
+    },
+    bumpPosition: function(){
+      var pan = this.model.parentGraph.get("pan");
+      var x = pan[0] + this.model.get("x");
+      var y = pan[1] + this.model.get("y");
       this.$(".module").css({
         left: x,
         top: y
-      });
-      this.model.set({
-        x: x + 10,
-        y: y + 30
       });
     },
     resizestart: function (event, ui) {
@@ -209,8 +230,8 @@ $(function(){
       var newW = ui.size.width;
       var newH = ui.size.height;
       this.model.set({
-        w: newW - 20,
-        h: newH - 40
+        w: newW,
+        h: newH
       });
       if (this.Native) {
         this.Native.resize(newW,newH);

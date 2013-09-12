@@ -11,7 +11,8 @@ $(function(){
         url: ""
       },
       nodes: [],
-      edges: []
+      edges: [],
+      pan: [0,0]
     },
     usedIds: [],
     edgeCount: 0,

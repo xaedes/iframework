@@ -54,15 +54,21 @@ button,
 
 .graph {
   background: #EEE url(img/meemoo-bg-graph.png) scroll repeat;
-  background-attachment: local;
   position: absolute;
   top: 0px;
   left: 0px;
   right: 0px;
   bottom: 0px;
-  overflow: auto;
+  overflow: hidden;
   border-right: 1px dotted #666;
 }
+  .dragpan {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+  }
   .edges {
     z-index: 1;
   }

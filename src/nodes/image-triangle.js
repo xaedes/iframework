@@ -2,14 +2,28 @@
 
 $(function(){
 
+
+  var template = 
+    '<div class="control-points" style="position:absolute; top:0px; left:0px; z-index:2;" >'+
+      '<div title="top-left"     class="control-point tl c0" data-handle="0" ></div>'+
+      '<div title="bottom-left"  class="control-point bl c1" data-handle="1" ></div>'+
+      '<div title="bottom-right" class="control-point br c2" data-handle="2" ></div>'+
+    '</div>';
+
   Iframework.NativeNodes["image-triangle"] = Iframework.NativeNodes["image"].extend({
 
     info: {
       title: "triangle",
       description: "draw a triangle"
     },
+    events: {
+      "dragstart .control-point": "startMove",
+      "drag .control-point":      "move",
+      "dragstop .control-point":  "stopMove"
+    },
     initializeModule: function(){
-      
+      this.canvas.style.maxWidth = "auto";
+      this.$(".control-point").draggable();
     },
     inputmatte: function (image) {
       this._matte = image;

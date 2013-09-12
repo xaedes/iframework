@@ -1,10 +1,12 @@
 $(function(){
 
   var template = 
-    '<div class="edges">'+
-      '<svg class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300"></svg>'+
+    '<div class="dragpan">'+
+      '<div class="edges">'+
+        '<svg class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300"></svg>'+
+      '</div>'+
+      '<div class="nodes" />'+
     '</div>'+
-    '<div class="nodes" />'+
     '<div class="iframework-graph-nav" style="display:none;">'+
       '<button class="show-parent-graph">back to parent graph</button>'+
     '</div>';
@@ -18,8 +20,9 @@ $(function(){
       "dragenter":       "ignoreDrag",
       "dragover":        "ignoreDrag",
       "drop":            "drop",
-      "selectablestart": "selectableStart",
-      "selectablestop":  "selectableStop",
+      "dragstart .dragpan": "dragStart",
+      "drag .dragpan":      "drag",
+      "dragstop .dragpan":  "dragStop",
       "click .show-parent-graph": "showParentGraph"
     },
     unhidden: false,
@@ -45,15 +48,15 @@ $(function(){
         accept: ".addnode, .canvas, .meemoo-plugin-images-thumbnail"
       });
 
-      // Thanks Stu Cox http://stackoverflow.com/a/14578826/592125
-      var supportsTouch = 'ontouchstart' in document;
-      if (!supportsTouch) {
-        // Selectable messes up scroll on touch devices
-        this.$el.selectable({
-          filter: ".module",
-          delay: 20
+      this.$(".dragpan")
+        .css({
+          transform: "translate3d(0,0,0)"
+        })
+        .draggable({
+          helper: function(){
+            return $("<div>");
+          }
         });
-      }
 
       this.resizeEdgeSVG();
 
@@ -116,6 +119,7 @@ $(function(){
             reader.readAsText(file);
           }
         }
+        return;
       }
 
       // Drop images or mods from libraries
@@ -212,14 +216,6 @@ $(function(){
         svg.setAttribute("height", Math.round(height));
       }
     }, 100),
-    selectableStart: function () {
-      // Add a mask so that iframes don't steal mouse
-      this.maskFrames();
-    },
-    selectableStop: function (event) {
-      // Remove iframe masks
-      this.unmaskFrames();
-    },
     selectAll: function () {
       this.$(".module").addClass("ui-selected");
     },
@@ -329,6 +325,30 @@ $(function(){
           edge.view.redraw();
         }
       }, this);
+    },
+    dragStartPan: null,
+    dragStart: function(event, ui){
+      this.dragStartPan = this.model.get("pan");
+    },
+    drag: function(event, ui){
+      if (!this.dragStartPan) {return;}
+      var x = ui.offset.left;
+      var y = ui.offset.top;
+      this.$(".dragpan")
+        .css({
+          transform: "translate3d("+x+"px,"+y+"px,0)"
+        });
+    },
+    dragStop: function(event, ui){
+      if (!this.dragStartPan) {return;}
+      this.$(".dragpan")
+        .css({
+          transform: "translate3d(0,0,0)"
+        });
+      var x = this.dragStartPan[0] + ui.offset.left;
+      var y = this.dragStartPan[1] + ui.offset.top;
+      this.model.set("pan", [x,y]);
+      this.dragStartPan = null;
     }
     
   });

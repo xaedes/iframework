@@ -354,6 +354,23 @@ $(function(){
       // Don't bubble
       event.stopPropagation();
     },
+    portOffset: function(){
+      var pan = this.model.parentNode.parentGraph.get("pan");
+      var index = this.$el.index();
+      // Node position
+      var x = pan[0] + this.model.parentNode.get("x");
+      var y = pan[1] + this.model.parentNode.get("y");
+      // Port position
+      if (this.model.isIn) {
+        x -= 70;
+        y += 9 + index*18;
+      } else {
+        var length = this.$el.siblings().length;
+        x += this.model.parentNode.get("w") + 70;
+        y += this.model.parentNode.get("h") - 9 - (length-index)*18;
+      }
+      return [x,y];
+    },
     portOffsetLeft: function () {
       var holeoffset = this.$('.hole').offset();
       if (holeoffset) {

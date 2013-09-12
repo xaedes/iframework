@@ -46,6 +46,9 @@ $(function(){
         if (this.model.Target) {
           this.model.Target.parentNode.on("change:x change:y", this.redraw, this);
         }
+
+        // Listen for pan
+        this.listenTo(this.model.parentGraph, "change:pan", this.redraw);
       }
     },
     render: function () {
@@ -101,12 +104,17 @@ $(function(){
     calcPositions: function () {
       if (this.model) {
         // Connected edge
-        var sourceName = this.model.get("source")[1];
-        var targetName = this.model.get("target")[1];
-        this.positions.fromX = this.model.Source.view.portOffsetLeft('out', sourceName);
-        this.positions.fromY = this.model.Source.view.portOffsetTop('out', sourceName);
-        this.positions.toX = this.model.Target.view.portOffsetLeft('in', targetName);
-        this.positions.toY = this.model.Target.view.portOffsetTop('in', targetName);
+        // var sourceName = this.model.get("source")[1];
+        // var targetName = this.model.get("target")[1];
+        var from = this.model.Source.view.portOffset();
+        var to = this.model.Target.view.portOffset();
+
+        console.log(from,to);
+
+        this.positions.fromX = from[0];
+        this.positions.fromY = from[1];
+        this.positions.toX = to[0];
+        this.positions.toY = to[1];
       }
     },
     svgX: function () {
