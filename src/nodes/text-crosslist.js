@@ -54,7 +54,6 @@ $(function(){
       return this._cross.join("\r\n");
     },
     inputsend: function(){
-      this.updateCrosslist();
       this.send("string", this.getCrosslistString());
     },
     inputlist1: function(str){
