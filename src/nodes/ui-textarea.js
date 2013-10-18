@@ -36,6 +36,7 @@ $(function(){
       this.inputsend();
     },
     inputsend: function(){
+      this._val = this.$(".text").val();
       this.send("string", this._val);
     },
     inputs: {
