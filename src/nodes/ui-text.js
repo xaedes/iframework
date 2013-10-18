@@ -20,7 +20,10 @@ $(function(){
       description: "a text box to save and send text"
     },
     events: {
-      "submit .textform": "submit"
+      "submit .textform": "submit",
+      "change .text": "changeText",
+      "keydown .text": "changeText",
+      "keyup .text": "changeText"
     },
     initializeModule: function(){
       this.$(".button").button();
@@ -39,7 +42,11 @@ $(function(){
       this.$(".label").text(label);
     },
     inputsend: function(){
+      this._val = this.$(".text").val();
       this.send("string", this._val);
+    },
+    changeText: function(event) {
+      this.send("changed","!");
     },
     inputs: {
       value: {
@@ -58,6 +65,10 @@ $(function(){
     outputs: {
       string: {
         type: "string"
+      },
+      changed: {
+        type: "bang",
+        description: "happens when text is changed"
       }
     }
 
