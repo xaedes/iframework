@@ -97,7 +97,8 @@ module.exports = function() {
     },
     connect: {
       options : {
-        port : 8000,
+        port : 8080,
+        keepalive: true,
         hostname : '*' // available from ipaddress:8000 on same network (or name.local:8000)
       },
       uses_defaults: {}
