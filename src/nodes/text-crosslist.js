@@ -7,7 +7,7 @@ $(function(){
   var template = 
     '<form class="textform">'+
       '<div style="position:absolute; top:2px; right:4px; bottom:30px; left:2px;">'+
-        '<textarea class="text" style="width:100%; height:100%;"></textarea>'+
+        '<textarea class="text" style="width:100%; height:100%;" readonly="readonly"></textarea>'+
       '</div>'+
       '<button class="send" type="submit" style="position:absolute; bottom:0; left:0;">send</button>'+
     '</form>';
@@ -20,7 +20,10 @@ $(function(){
       description: "combines all lines from line1 and line2 and outputs the results"
     },
     events: {
-      "submit .textform": "submit"
+      "submit .textform": "submit",
+      "change .text": "changeText",
+      "keydown .text": "changeText",
+      "keyup .text": "changeText"
     },
     initializeModule: function(){
       this.$(".button").button();
@@ -44,6 +47,7 @@ $(function(){
       };
 
       this.$(".text").val(this.getCrosslistString());
+      this.changeText(null);
     },
     getCrosslistString: function () {
       this._cross = this._cross == undefined ? [] : this._cross
@@ -64,6 +68,9 @@ $(function(){
     inputglue: function(str){
       this._glue = str;
       this.updateCrosslist();
+    },
+    changeText: function(event) {
+      this.send("changed","!");
     },
     inputs: {
       list1: {
@@ -90,6 +97,10 @@ $(function(){
     outputs: {
       string: {
         type: "string"
+      },
+      changed: {
+        type: "bang",
+        description: "happens when text is changed"
       }
     }
 
