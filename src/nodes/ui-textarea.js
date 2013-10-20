@@ -49,7 +49,9 @@ $(function(){
     inputs: {
       value: {
         type: "string",
-        description: "manual input of text"
+        description: "manual input of text",
+        input_template: "<textarea><%= value %></textarea>",
+        input_element: "textarea"
       },
       send: {
         type: "bang",
