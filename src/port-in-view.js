@@ -264,7 +264,18 @@ $(function(){
           "class": "manualinput",
           "novalidate": ""
         });
-      if (typeabbr === "int" || typeabbr === "num" || typeabbr === "flo" ) {
+      if (this.model.has("input_template")) {
+        showForm = true;
+        var templ;
+        if (typeof(this.model.get("input_template")) === "string") {
+          templ = _.template(this.model.get("input_template"));
+        } else if (typeof(this.model.get("input_template")) === "function") {
+          templ = this.model.get("input_template");
+        }
+        json = this.model.toJSON();
+        json["value"] = this.model.node.get("state")[this.model.get("name")];
+        inputForm.append(templ(json));
+      } else if (typeabbr === "int" || typeabbr === "num" || typeabbr === "flo" ) {
         showForm = true;
         inputForm.append(
           $("<input />").attr({
@@ -402,8 +413,16 @@ $(function(){
 
       var val;
       var saveToState = true;
-      if (this.$(".manualinput").children("input")){
-        val = this.$(".manualinput").children("input").val();
+      var input_element;
+
+      if (this.model.has("input_element")) {
+        input_element = this.model.get("input_element");
+      } else {
+        input_element = "input";
+      }
+
+      if (this.$(".manualinput").children(input_element)){
+        val = this.$(".manualinput").children(input_element).val();
       }
       if (this.$(".manualinput").children("input:checkbox").length > 0) {
         if (this.$(".manualinput").children("input:checkbox").is(':checked')) {
