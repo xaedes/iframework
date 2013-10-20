@@ -73,7 +73,8 @@ $(function(){
       {"src":"meemoo:ui/smartphone","info":{"title":"smartphone","author":"meemoo","description":"iOS or Android smartphone gamepad controller via muzzley.com"}}
     ],
     text: [
-      {"src":"meemoo:text/crosslist","info":{"title":"crosslist","author":"xaedes","description":"combines all lines from line1 and line2 and outputs the results"}}
+      {"src":"meemoo:text/crosslist","info":{"title":"crosslist","author":"xaedes","description":"combines all lines from line1 and line2 and outputs the results"}},
+      {"src":"meemoo:text/fromobject","info":{"title":"fromobject","author":"xaedes","description":"returns string representation from object"}},
     ],
     "iframe---fading": [
       // {"src":"http://forresto.github.com/meemoo-camcanvas/onionskin.html","info":{"title":"cam+onionskin","author":"taboca + forresto + ginger","description":"flash webcam image to canvas with onionskin of last frame"}},
