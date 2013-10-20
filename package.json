@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/meemoo/iframework.git"
+    "url": "git://github.com/xaedes/iframework.git"
   },
   "bugs": {
-    "url": "https://github.com/meemoo/iframework/issues"
+    "url": "https://github.com/xaedes/iframework/issues"
   },
   "licenses": [
     {
