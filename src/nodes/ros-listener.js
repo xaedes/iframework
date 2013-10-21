@@ -20,27 +20,21 @@ $(function(){
     },
     initializeModule: function(){
       this._host = this.inputs["host"]["default"];
-      this.ros = new ROSLIB.Ros({
-        url : this._host
-      });
       this._topic_name = this.inputs["topic"]["default"];
 
-      this.srv_rosapi_topic_type = new ROSLIB.Service({
-        ros : this.ros,
-        name : '/rosapi/topic_type',
-        serviceType : 'rosapi/TopicType'
-      });
+      this.initRos(this._host);
+
+      this.initSrvRosapiTopicType();
 
       this.newtopic();
 
     },
+
     newtopic: function(){
       self = this;
-      var rqst_topic_type = new ROSLIB.ServiceRequest({
-        topic : this._topic_name
-      });
 
-      this.srv_rosapi_topic_type.callService(rqst_topic_type, function(result) {
+      this.requestTopicType(this._topic_name, function(result) {
+        // unsubcribe previous topic
         if((typeof(self.topic) != "undefined") && (typeof(self.topic.unsubscribe) == "function")){
           self.topic.unsubscribe();
         }
@@ -52,8 +46,7 @@ $(function(){
         self.topic.subscribe(function(message){
           self.send("message",message);
         });
-      });
-
+      }) 
     },
 
     inputhost: function(host){
