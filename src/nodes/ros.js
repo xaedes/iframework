@@ -13,7 +13,34 @@ $(function(){
     initRos: function(host){
       this.ros = new ROSLIB.Ros({
         url : host
-      });      
+      });
+    },
+
+
+    /*
+     * Subscribes to topic_name and stores topic in this.topics[_id]
+     * 
+     * If this.topics[_id] already exists, unsubsribe first.
+     * 
+     * \warn uses this.requestTopicType, so make sure it is initialized first with this.initSrvRosapiTopicType
+     * \warn expects this.ros to be set to ROSLIB.Ros instance (e.g. use this.initRos())
+     */
+    subscribe: function(_id,topic_name,callback){ 
+      this.topics = this.topics || [];
+      self = this;
+
+      this.requestTopicType(topic_name, function(result) {
+        // unsubcribe previous topic
+        if((typeof(self.topics[_id]) != "undefined") && (typeof(self.topics[_id].unsubscribe) == "function")){
+          self.topics[_id].unsubscribe();
+        }
+        self.topics[_id] = new ROSLIB.Topic({
+          ros : self.ros,
+          name: topic_name,
+          messageType: result["type"]
+        });
+        self.topics[_id].subscribe(callback);
+      });
     },
     /*
      * initializes this.srv_rosapi_topic_type

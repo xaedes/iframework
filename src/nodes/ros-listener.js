@@ -23,36 +23,27 @@ $(function(){
       this._topic_name = this.inputs["topic"]["default"];
 
       this.initRos(this._host);
+      self.ros.on('connection', function(){
+        this.initSrvRosapiTopicType();
+        this.newtopic();  
+      });
 
-      this.initSrvRosapiTopicType();
-
-      this.newtopic();
 
     },
 
     newtopic: function(){
       self = this;
-
-      this.requestTopicType(this._topic_name, function(result) {
-        // unsubcribe previous topic
-        if((typeof(self.topic) != "undefined") && (typeof(self.topic.unsubscribe) == "function")){
-          self.topic.unsubscribe();
-        }
-        self.topic = new ROSLIB.Topic({
-          ros : self.ros,
-          name: self._topic_name,
-          messageType: result["type"]
-        });
-        self.topic.subscribe(function(message){
+      this.subscribe("topic",this._topic_name,function(message){
           self.send("message",message);
-        });
-      });
+      }); 
     },
 
     inputhost: function(host){
       this._host = host;
       this.ros.connect(this._host);
-      this.newtopic();
+      self.ros.on('connection', function(){
+        this.newtopic();
+      });
     },
     inputtopic: function(topic){
       this._topic_name = topic;
@@ -62,7 +53,7 @@ $(function(){
       host: {
         type: "string",
         description: "host where rosbridge is running",
-        "default": "ws://192.168.0.102:9090"
+        "default": "ws://192.168.0.103:9090"
       },
       topic: {
         type: "string",
