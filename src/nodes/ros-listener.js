@@ -41,8 +41,9 @@ $(function(){
       });
 
       this.srv_rosapi_topic_type.callService(rqst_topic_type, function(result) {
-        if(this.topic !== undefined)
-          this.topic.unsubscribe();
+        if((typeof(self.topic) != "undefined") && (typeof(self.topic.unsubscribe) == "function")){
+          self.topic.unsubscribe();
+        }
         self.topic = new ROSLIB.Topic({
           ros : self.ros,
           name: self._topic_name,
@@ -58,6 +59,7 @@ $(function(){
     inputhost: function(host){
       this._host = host;
       this.ros.connect(this._host);
+      this.newtopic();
     },
     inputtopic: function(topic){
       this._topic_name = topic;
