@@ -83,6 +83,7 @@ $(function(){
     ros: [
       {"src":"meemoo:ros/listener","info":{"title":"listener","author":"xaedes","description":"Listens to a topic"}},
       {"src":"meemoo:ros/service","info":{"title":"service","author":"xaedes","description":"A ros-service. When request is received it is sent to a ros service and the result is sent to output."}},
+      {"src":"meemoo:ros/imuconnect","info":{"title":"imuconnect","author":"xaedes","description":"Connects to IMU. Listens to /imu/data_raw and /imu/mag and visualizes output."}},
     ],
     "iframe---fading": [
       // {"src":"http://forresto.github.com/meemoo-camcanvas/onionskin.html","info":{"title":"cam+onionskin","author":"taboca + forresto + ginger","description":"flash webcam image to canvas with onionskin of last frame"}},
