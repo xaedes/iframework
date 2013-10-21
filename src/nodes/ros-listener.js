@@ -36,24 +36,22 @@ $(function(){
     },
     newtopic: function(){
       self = this;
-      if(this.topic !== undefined)
-        this.topic.unsubscribe();
+      var rqst_topic_type = new ROSLIB.ServiceRequest({
+        topic : this._topic_name
+      });
 
-
-        var rqst_topic_type = new ROSLIB.ServiceRequest({
-          topic : this._topic_name
+      this.srv_rosapi_topic_type.callService(rqst_topic_type, function(result) {
+        if(this.topic !== undefined)
+          this.topic.unsubscribe();
+        self.topic = new ROSLIB.Topic({
+          ros : self.ros,
+          name: self._topic_name,
+          messageType: result["type"]
         });
-        
-        this.srv_rosapi_topic_type.callService(rqst_topic_type, function(result) {
-          self.topic = new ROSLIB.Topic({
-            ros : self.ros,
-            name: self._topic_name,
-            messageType: result["type"]
-          });
-          self.topic.subscribe(function(message){
-            self.send("message",message);
-          });
+        self.topic.subscribe(function(message){
+          self.send("message",message);
         });
+      });
 
     },
 
