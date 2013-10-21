@@ -20,11 +20,10 @@ $(function(){
     },
     initializeModule: function(){
       this._host = this.inputs["host"]["default"];
-      this.ros = new ROSLIB.Ros({
-        url : this._host
-      });
       this._service = this.inputs["service"]["default"];
       this._request = this.inputs["request"]["default"];
+
+      this.initRos(this._host);
 
       this.newservice();
     },
