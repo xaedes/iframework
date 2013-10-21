@@ -46,7 +46,7 @@ $(function(){
         self.topic.subscribe(function(message){
           self.send("message",message);
         });
-      }) 
+      });
     },
 
     inputhost: function(host){
