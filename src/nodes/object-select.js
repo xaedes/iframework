@@ -31,10 +31,6 @@ $(function(){
         };
       }
 
-      // obj = this._obj[this._jsonpath]
-      // obj = jsonPath(this._obj, this._jsonpath); // http://goessner.net/articles/JsonPath/
-      console.log(obj);
-      console.log(typeof(obj));
       if(typeof(obj) !== "undefined"){
         str = Iframework.util.DumpObjectIndented(obj);
         this.$("textarea").val(str);
@@ -48,7 +44,7 @@ $(function(){
     inputselection: function(sel){
       this._selection = [];
 
-      var sel = sel.trim();
+      sel = sel.trim();
       // Parse selection
       while(sel.length > 0) {
         sel = sel.replace(/([^\\\.])(\[)/,"$1.$2");           // put splitting '.' around [] when it is missing
