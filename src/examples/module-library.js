@@ -73,6 +73,9 @@ $(function(){
       {"src":"meemoo:ui/makeymakey","info":{"title":"makeymakey","author":"meemoo","description":"makeymakey board"}},
       {"src":"meemoo:ui/smartphone","info":{"title":"smartphone","author":"meemoo","description":"iOS or Android smartphone gamepad controller via muzzley.com"}}
     ],
+    object: [
+      {"src":"meemoo:object/select","info":{"title":"select","author":"xaedes","description":"selects part of a object"}},
+    ],
     text: [
       {"src":"meemoo:text/crosslist","info":{"title":"crosslist","author":"xaedes","description":"combines all lines from line1 and line2 and outputs the results"}},
       {"src":"meemoo:text/fromobject","info":{"title":"fromobject","author":"xaedes","description":"returns string representation from object"}},
