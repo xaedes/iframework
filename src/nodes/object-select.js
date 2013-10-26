@@ -28,7 +28,7 @@ $(function(){
       if(typeof(this._selection) !== "undefined"){
         for (var i = 0; i < this._selection.length; i++) {
           obj = obj[this._selection[i]];
-        };
+        }
       }
 
       if(typeof(obj) !== "undefined"){
