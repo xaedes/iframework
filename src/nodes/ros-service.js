@@ -54,7 +54,7 @@ $(function(){
       host: {
         type: "string",
         description: "host where rosbridge is running",
-        "default": "ws://192.168.0.103:9090"
+        "default": "ws://ros.local:9090"
       },
       service: {
         type: "object",
