@@ -1020,3 +1020,29 @@ footer {
   font-size: 10px;
   z-index: 1000;
 }
+
+
+/* ros SensorChart */
+svg.SensorChart path {
+    fill: none;
+    stroke-antialiasing: true;
+}
+
+svg.SensorChart path.line {
+    stroke: steelblue;
+    stroke-width: 1;
+}
+
+svg.SensorChart path.domain {
+
+    stroke: black;
+}
+ 
+svg.SensorChart line {
+    stroke: black;
+}
+ 
+svg.SensorChart text {
+    font-family: Arial;
+    font-size: 9pt;
+}

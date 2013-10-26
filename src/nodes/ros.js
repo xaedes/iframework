@@ -59,9 +59,25 @@ $(function(){
     requestTopicType: function(topic_name, callback){
       var rqst_topic_type = new ROSLIB.ServiceRequest({
         topic : topic_name
-      });
+      }); 
       
       this.srv_rosapi_topic_type.callService(rqst_topic_type, callback);
+    },
+
+    initSrvRosapiGetTime: function() {
+      this.srv_rosapi_get_time = new ROSLIB.Service({
+        ros : this.ros,
+        name : '/rosapi/get_time',
+        serviceType : 'rosapi/GetTime'
+      });
+    },
+    requestRosTime: function(callback){
+      var rqst = new ROSLIB.ServiceRequest({});
+      
+      this.srv_rosapi_get_time.callService(rqst, callback);
+    },
+    timeToSec: function(timestamp){
+      return timestamp.secs*1.0+timestamp.nsecs/1000000000.0;
     },
   });
 });
