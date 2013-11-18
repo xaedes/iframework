@@ -97,6 +97,12 @@ $(function(){
 
                 });
             self._overlay.call(self._drag);
+
+            self._update_rate = 60.0;
+            self._update_interval = 1.0 / self._update_rate;
+            window.setInterval(function() {
+                self._update_line();
+            }, self._update_interval);
         },
         _default_nav: function() {
             return {
@@ -230,7 +236,7 @@ $(function(){
             return val;
         },
         _smooth_movement: function() {
-            return;
+            return; //disabled because of performance issues
             var self = this;
             self._time_offset_smooth_movement = self.now();
             var interval = 1000;    
@@ -261,7 +267,7 @@ $(function(){
                 data.splice(0,i-1);  
             }
             data.push(sample);
-            self._update_line();
+            // self._update_line();
         }
     })
   };
